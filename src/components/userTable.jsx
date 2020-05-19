@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import Like from './common/like';
 import Table from './common/table';
 
-class MoviesTable extends Component {
+class UserTable extends Component {
   columns = [
+    { path: 'id', label: '#' },
     { path: 'title', label: 'Title' },
-    { path: 'genre.name', label: 'Genre' },
-    { path: 'numberInStock', label: 'Stock' },
-    { path: 'dailyRentalRate', label: 'Rate' },
+    { path: 'body', label: 'Body' },
     {
       label: 'Like',
       content: (item) => (
@@ -41,4 +40,4 @@ class MoviesTable extends Component {
   }
 }
 
-export default MoviesTable;
+export default UserTable;
