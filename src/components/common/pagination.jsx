@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const Pagination = (props) => {
   const { itemsCount, pageSize, currentPage, onPageChange } = props;
-  console.log(itemsCount);
   const pagesCount = Math.ceil(itemsCount / pageSize);
   // if (pagesCount === 1) return null;
   const pages = _.range(1, pagesCount + 1);
@@ -22,7 +21,10 @@ const Pagination = (props) => {
               <a
                 className='page-link'
                 style={{ cursor: 'pointer' }}
-                onClick={() => onPageChange(page)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onPageChange(page);
+                }}
                 href='!#'
               >
                 {page}

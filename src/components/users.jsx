@@ -52,7 +52,6 @@ class Users extends Component {
   render() {
     const { length: count } = this.state.users;
     const { currentPage, PageSize, users, sortColumn } = this.state;
-    console.log(users);
     if (count === 0) return <p>There are no user in the database.</p>;
 
     const sorted = _.orderBy(users, [sortColumn.path], [sortColumn.order]);
