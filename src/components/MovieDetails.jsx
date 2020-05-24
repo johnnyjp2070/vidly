@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MovieForm from '../components/common/MovieForm';
 
 class MovieDetails extends Component {
   onSave = () => {
@@ -9,10 +10,7 @@ class MovieDetails extends Component {
     const { match } = this.props;
     return (
       <div>
-        <h1 className='mt-3 ml-3'>Movie Form {match.params.id}</h1>
-        <button className=' ml-3 btn btn-primary' onClick={this.onSave}>
-          Save
-        </button>
+        <MovieForm></MovieForm>
       </div>
     );
   }

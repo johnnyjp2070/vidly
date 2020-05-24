@@ -6,6 +6,8 @@ import ListGroup from './common/listGroup';
 import { getGenres } from '../services/fakeGenreService';
 import MoviesTable from './moviesTable';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
+import SearchBox from './common/searchBox';
 
 class Movies extends Component {
   state = {
@@ -13,6 +15,7 @@ class Movies extends Component {
     genres: [],
     currentPage: 1,
     PageSize: 3,
+    searchQuery: '',
     selectedGenre: { name: 'All Generes' },
     sortColumn: { path: 'title', order: 'asc' },
   };
@@ -57,6 +60,15 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
+  handleSearch = (query) => {
+    console.log(query);
+    this.setState({
+      searchQuery: query,
+      selectedGenre: { name: 'All Generes' },
+      currentPage: 1,
+    });
+  };
+
   render() {
     const { length: count } = this.state.movies;
     const {
@@ -65,13 +77,24 @@ class Movies extends Component {
       selectedGenre,
       movies: allMovies,
       sortColumn,
+      searchQuery,
     } = this.state;
     if (count === 0) return <p>There are no movies in the database.</p>;
 
-    const filtered =
-      selectedGenre && selectedGenre._id
-        ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
-        : allMovies;
+    let filtered = allMovies;
+
+    if (searchQuery) {
+      filtered = allMovies.filter((m) =>
+        m.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    } else if (selectedGenre && selectedGenre._id) {
+      filtered = allMovies.filter((m) => m.genre._id === selectedGenre._id);
+    }
+
+    // const filtered =
+    //   selectedGenre && selectedGenre._id
+    //     ? allMovies.filter((m) => m.genre._id === selectedGenre._id)
+    //     : allMovies;
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -94,6 +117,10 @@ class Movies extends Component {
               Showing {filtered.length} movies in the{' '}
               <b>"{selectedGenre.name}"</b> section.
             </p>
+            <Link to='/movies/new' className='btn btn-primary mb-3'>
+              Add Movie
+            </Link>
+            <SearchBox onSearch={this.handleSearch}></SearchBox>
             <MoviesTable
               movies={movies}
               onLike={this.handleLike}
