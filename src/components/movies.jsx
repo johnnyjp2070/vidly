@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import { getMovies } from '../services/fakeMovieService';
+import { getMovies, deleteMovie } from '../services/movieService';
 import Pagination from './common/pagination';
 import { paginate } from '../utils/paginate';
 import ListGroup from './common/listGroup';
-import { getGenres } from '../services/fakeGenreService';
+import { getGenres } from '../services/genreService';
 import MoviesTable from './moviesTable';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import SearchBox from './common/searchBox';
-
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 class Movies extends Component {
   state = {
     movies: [],
@@ -20,24 +21,42 @@ class Movies extends Component {
     sortColumn: { path: 'title', order: 'asc' },
   };
 
-  componentDidMount() {
-    const genres = [{ name: 'All Generes' }, ...getGenres()];
+  async componentDidMount() {
+    const { data: genrefromServer } = await getGenres();
+    const genres = [{ name: 'All Generes' }, ...genrefromServer];
+    const { data: movies } = await getMovies();
     this.setState({
-      movies: getMovies(),
+      movies: movies,
       genres: genres,
     });
   }
 
-  handleDelete = (movie) => {
-    const movies = this.state.movies.filter((m) => m._id !== movie._id);
+  handleDelete = async (movie) => {
+    const originalMovies = this.state.movies;
+    const originalCurrentPage = this.state.currentPage;
+
+    const movies = originalMovies.filter((m) => m._id !== movie._id);
     const { currentPage, PageSize } = this.state;
     this.setState({ movies: movies });
-    if (
-      currentPage > 1 &&
-      movies.length % PageSize === 0 &&
-      currentPage * PageSize > movies.length
-    ) {
-      this.handlePageChange(currentPage - 1);
+
+    try {
+      await deleteMovie(movie._id);
+      toast.success('Movie was deleted successfully');
+      if (
+        currentPage > 1 &&
+        movies.length % PageSize === 0 &&
+        currentPage * PageSize > movies.length
+      ) {
+        this.handlePageChange(currentPage - 1);
+      }
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) {
+        toast.error('Movie already deleted');
+      }
+      this.setState({
+        movies: originalMovies,
+        currentPage: originalCurrentPage,
+      });
     }
   };
 
@@ -102,6 +121,7 @@ class Movies extends Component {
 
     return (
       <div className='container-lg'>
+        <ToastContainer></ToastContainer>
         <div className='row mt-4'>
           <div className='col-3'>
             <ListGroup
