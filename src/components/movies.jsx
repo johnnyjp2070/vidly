@@ -98,6 +98,7 @@ class Movies extends Component {
       sortColumn,
       searchQuery,
     } = this.state;
+    const { user } = this.props;
     if (count === 0) return <p>There are no movies in the database.</p>;
 
     let filtered = allMovies;
@@ -137,9 +138,11 @@ class Movies extends Component {
               Showing {filtered.length} movies in the{' '}
               <b>"{selectedGenre.name}"</b> section.
             </p>
-            <Link to='/movies/new' className='btn btn-primary mb-3'>
-              Add Movie
-            </Link>
+            {user && (
+              <Link to='/movies/new' className='btn btn-primary mb-3'>
+                Add Movie
+              </Link>
+            )}
             <SearchBox onSearch={this.handleSearch}></SearchBox>
             <MoviesTable
               movies={movies}
