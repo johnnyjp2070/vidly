@@ -13,6 +13,7 @@
     "jquery": "^3.5.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.10",
+    "popper.js": "^1.16.1",
     "prop-types": "^15.6.2",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
