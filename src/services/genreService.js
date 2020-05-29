@@ -6,10 +6,8 @@
 
 import http from './httpService';
 
-import config from '../config.json';
-
 export function getGenres() {
-  const genres = http.get(`${config.apiUrl}/genres`);
+  const genres = http.get(`/genres`);
   // console.log(genres.data);
   return genres;
 }

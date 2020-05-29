@@ -7,6 +7,8 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
+console.log('SUPERMAN', process.env.REACT_APP_NAME);
+
 ReactDOM.render(<App></App>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

@@ -99,7 +99,7 @@ class Movies extends Component {
       searchQuery,
     } = this.state;
     const { user } = this.props;
-    if (count === 0) return <p>There are no movies in the database.</p>;
+    // if (count === 0) return <p>There are no movies in the database.</p>;
 
     let filtered = allMovies;
 

@@ -1,17 +1,16 @@
 import http from './httpService';
-import { apiUrl } from '../config.json';
 // const apiEndpoint = 'http://localhost:3900/api/movies';
 
 export function getMovies() {
-  return http.get(`${apiUrl}/movies`);
+  return http.get(`/movies`);
 }
 
 export function deleteMovie(movieId) {
-  return http.delete(`${apiUrl}/movies/${movieId}`);
+  return http.delete(`/movies/${movieId}`);
 }
 
 export function getMovie(movieId) {
-  return http.get(`${apiUrl}/movies/${movieId}`);
+  return http.get(`/movies/${movieId}`);
 }
 
 export function saveMovie(movie) {
@@ -20,10 +19,10 @@ export function saveMovie(movie) {
   if (movie._id) {
     const body = { ...movie };
     delete body._id;
-    return http.put(`${apiUrl}/movies/${movie._id}`, body);
+    return http.put(`/movies/${movie._id}`, body);
   }
 
-  return http.post(`${apiUrl}/movies`, movie);
+  return http.post(`/movies`, movie);
   // let movieInDb = movies.find((m) => m._id === movie._id) || {};
   // movieInDb.title = movie.title;
   // movieInDb.genre = genresAPI.genres.find((g) => g._id === movie.genreId);
