@@ -4,9 +4,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import 'bootstrap/dist/css/bootstrap.css';
-import '@fortawesome/fontawesome-free/css/all.css';
 import 'jquery/dist/jquery.js';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 // console.log('SUPERMAN', process.env.REACT_APP_NAME);
 
