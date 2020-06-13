@@ -124,7 +124,7 @@ class Movies extends Component {
       <div className='container-lg'>
         <ToastContainer></ToastContainer>
         <div className='row mt-4'>
-          <div className='col-3'>
+          <div className='col-md-3'>
             <ListGroup
               items={this.state.genres}
               valueProperty='_id'
