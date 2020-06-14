@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { getMovies, deleteMovie } from '../services/movieService';
 import Pagination from './common/pagination';
 import { paginate } from '../utils/paginate';
@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 import SearchBox from './common/searchBox';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from './Spinner';
+
 class Movies extends Component {
   state = {
     movies: [],
@@ -19,6 +21,7 @@ class Movies extends Component {
     searchQuery: '',
     selectedGenre: { name: 'All Generes' },
     sortColumn: { path: 'title', order: 'asc' },
+    isLoading: true,
   };
 
   async componentDidMount() {
@@ -28,6 +31,7 @@ class Movies extends Component {
     this.setState({
       movies: movies,
       genres: genres,
+      isLoading: false,
     });
   }
 
@@ -125,13 +129,17 @@ class Movies extends Component {
         <ToastContainer></ToastContainer>
         <div className='row mt-4'>
           <div className='col-md-3'>
-            <ListGroup
-              items={this.state.genres}
-              valueProperty='_id'
-              textProperty='name'
-              onItemSelect={this.handleGenreSelect}
-              selectedItem={this.state.selectedGenre}
-            ></ListGroup>
+            {this.state.isLoading ? (
+              <Spinner></Spinner>
+            ) : (
+              <ListGroup
+                items={this.state.genres}
+                valueProperty='_id'
+                textProperty='name'
+                onItemSelect={this.handleGenreSelect}
+                selectedItem={this.state.selectedGenre}
+              ></ListGroup>
+            )}
           </div>
           <div className='col'>
             <p>
@@ -144,19 +152,26 @@ class Movies extends Component {
               </Link>
             )}
             <SearchBox onSearch={this.handleSearch}></SearchBox>
-            <MoviesTable
-              movies={movies}
-              onLike={this.handleLike}
-              onDelete={this.handleDelete}
-              onSort={this.handleSort}
-              sortColumn={sortColumn}
-            ></MoviesTable>
-            <Pagination
-              onPageChange={this.handlePageChange}
-              itemsCount={filtered.length}
-              pageSize={PageSize}
-              currentPage={currentPage}
-            ></Pagination>
+
+            {this.state.isLoading ? (
+              <Spinner></Spinner>
+            ) : (
+              <Fragment>
+                <MoviesTable
+                  movies={movies}
+                  onLike={this.handleLike}
+                  onDelete={this.handleDelete}
+                  onSort={this.handleSort}
+                  sortColumn={sortColumn}
+                ></MoviesTable>
+                <Pagination
+                  onPageChange={this.handlePageChange}
+                  itemsCount={filtered.length}
+                  pageSize={PageSize}
+                  currentPage={currentPage}
+                ></Pagination>
+              </Fragment>
+            )}
           </div>
         </div>
       </div>
